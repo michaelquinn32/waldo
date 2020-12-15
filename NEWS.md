@@ -1,5 +1,9 @@
 # waldo (development version)
 
+* waldo now uses the more robust `rlang::zap_srcref()` instead of
+  `utils::removeSource()` to properly remove source references in all
+  cases when `ignore_srcref` is `TRUE` (#59).
+
 * Fix failure when comparing two S3 objects with incompatible types.
 
 * Description of S3 objects now includes base type.

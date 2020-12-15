@@ -235,3 +235,21 @@ test_that("comparing language objects gives useful diffs", {
     compare(expression(1, a, a + b), expression(1, a, a + c))
   })
 })
+
+test_that("all srcrefs are ignored (#59)", {
+  call <- quote(function() x + 1)
+  call_roundtrip <- parse_expr(expr_deparse(call))
+  expect_equal(
+    compare_structure(call_roundtrip, call),
+    character()
+  )
+})
+
+test_that("`compare()` does not dispatch on `[[` with srcrefs (#59)", {
+  x <- structure(quote(foo()), class = "waldo:::non_subsettable")
+  `[[.waldo:::non_subsettable` <- function(...) stop("Can't subset!")
+  expect_equal(
+    compare_structure(x, duplicate(x)),
+    character()
+  )
+})
